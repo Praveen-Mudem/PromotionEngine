@@ -28,15 +28,16 @@ namespace PromotionEngine
                                 int tQnt = cartInfo.Quantity / ruleInfo.Quantity;
                                 //finding remaining qunaities.
                                 int remainQnt = cartInfo.Quantity % ruleInfo.Quantity;
-                                
-                                cartInfo.CaltulatedPrice = (tQnt * ruleInfo.FixedPrice) + (cartInfo.Price * remainQnt);
+                                decimal price = (from item in _productList where item.ProductText == cartInfo.ProductText select item.Price).FirstOrDefault();
+                                cartInfo.CaltulatedPrice = (tQnt * ruleInfo.FixedPrice) + (price * remainQnt);
                             }
                         }
                     }
                 }
                 else
                 {
-                    if (_cartList.Exists(cItem => cItem.ProductText == ruleInfo.Product1 && cItem.ProductText == ruleInfo.Product2))
+                    if (_cartList.Exists(cItem => cItem.ProductText == ruleInfo.Product1 ) &&
+                        _cartList.Exists(cItem => cItem.ProductText == ruleInfo.Product2))
                     {
                         foreach (ProductData cartInfo in _cartList)
                         {
