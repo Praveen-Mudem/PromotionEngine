@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PromotionEngine
 {
-    public class Class1
+    class ProductService
     {
     }
 }
