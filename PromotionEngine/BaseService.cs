@@ -9,8 +9,8 @@ namespace PromotionEngine
     public interface IPrductBase
     {
         void AddProduct(string product, decimal price);
-        void AddRule(string ruleType, int quantity, string productText, decimal price);
-        void AddRule(string ruleType, string product1, string product2, decimal price);
+        bool AddRule(string ruleType, int quantity, string productText, decimal price);
+        bool AddRule(string ruleType, string product1, string product2, decimal price);
         void AddToCart(int qunatity, string product);
         decimal GetTotal();
         void ExecuteRules();
@@ -33,19 +33,34 @@ namespace PromotionEngine
         {
             _productList.Add(new ProductData() { ProductText = product, Price = price });
         }
-        public void AddRule(string ruleType, int quantity, string productText, decimal price)
+        public bool AddRule(string ruleType, int quantity, string productText, decimal price)
         {
-            _ruleList.Add(new ProductRuleData() { RuleType = ruleType, Quantity = quantity, Product1 = productText, FixedPrice = price });
+            bool isAdded = false;
+            if (!IsProductAlreadyExistsInRule(productText))
+            {
+                _ruleList.Add(new ProductRuleData() { RuleType = ruleType, Quantity = quantity, Product1 = productText, FixedPrice = price });
+                isAdded = true;
+            }
+            return isAdded;
         }
-        public void AddRule(string ruleType, string product1, string product2, decimal price)
+        public bool AddRule(string ruleType, string product1, string product2, decimal price)
         {
-            _ruleList.Add(new ProductRuleData() { RuleType = ruleType, Product2 = product2, Product1 = product1, FixedPrice = price });
+            bool isAdded = false;
+            if (!IsProductAlreadyExistsInRule(product1) && !IsProductAlreadyExistsInRule(product2))
+            {
+                _ruleList.Add(new ProductRuleData() { RuleType = ruleType, Product2 = product2, Product1 = product1, FixedPrice = price });
+                isAdded = true;
+            }
+            return isAdded;
         }
         public void AddToCart(int qunatity, string product)
         {
             decimal price = (from item in _productList where item.ProductText == product select item.Price).FirstOrDefault();
             _cartList.Add(new ProductData() { Quantity = qunatity, ProductText = product, Price = qunatity * price, CaltulatedPrice = qunatity * price });
         }
-      
+        private bool IsProductAlreadyExistsInRule(string productText)
+        {
+            return _ruleList.Exists(item => item.Product1 == productText || item.Product2 == productText);
+        }
     }
 }
