@@ -21,6 +21,7 @@ namespace PromotionEngine
         public int Quantity { get; set; }
         public decimal CaltulatedPrice { get; set; }
     }
+  
     public class BaseDispose : IDisposable
     {
         // Flag: Has Dispose already been called?

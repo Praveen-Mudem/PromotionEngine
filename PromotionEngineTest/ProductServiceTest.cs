@@ -19,9 +19,9 @@ namespace PromotionEngineTest
             productServ.AddProduct("B", 30);
             productServ.AddProduct("C", 20);
             productServ.AddProduct("D", 15);
-            productServ.AddRule("SI", 3, "A", 130);
-            productServ.AddRule("SI", 2, "B", 45);
-            productServ.AddRule("MI", "C", "D", 30);
+            productServ.AddRule(3, "A", 130);
+            productServ.AddRule( 2, "B", 45);
+            productServ.AddRule("C", "D", 30);
         }
         [TestMethod]
         public void ScenarioA()
